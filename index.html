@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
 <!-- ── PRIMARY SEO ── -->
 <title>ADAffTech Lead Generation Agency | Insurance, Solar, Mortgages | adafftech-leadgen</title>
@@ -285,7 +285,41 @@ tbody td{padding:14px 16px;font-size:13px;vertical-align:middle}
 
 /* ── UTILS ── */
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-@media(max-width:768px){.info-grid{grid-template-columns:1fr!important}.products-grid{grid-template-columns:1fr 1fr!important}.hero-stats{flex-direction:row;flex-wrap:wrap;gap:16px}.capture-card{padding:24px 18px}
+@media(max-width:768px){
+  /* Core layout */
+  .landing{padding:0 16px}
+  .crm{padding:16px}
+  .dash{padding:16px}
+  /* Hero */
+  .hero{grid-template-columns:1fr;gap:24px;padding:40px 0 32px}
+  .hero-h1{font-size:28px}
+  .hero-sub{max-width:100%}
+  .hero-stats{flex-direction:row;flex-wrap:wrap;gap:16px}
+  /* Form */
+  .capture-card{padding:20px 16px}
+  .form-row{grid-template-columns:1fr!important}
+  /* Trust */
+  .trust{flex-direction:column;gap:16px;padding:24px 0}
+  .trust-items{gap:12px}
+  /* Steps */
+  .steps{grid-template-columns:1fr 1fr}
+  .step::after{display:none}
+  /* Grids */
+  .info-grid{grid-template-columns:1fr!important}
+  .products-grid{grid-template-columns:1fr 1fr!important}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .dash-grid{grid-template-columns:1fr}
+  /* Nav */
+  .tabs .tab-btn{padding:8px 10px;font-size:11px}
+  /* Prevent ALL horizontal overflow */
+  *{max-width:100%;box-sizing:border-box}
+  img{max-width:100%}
+  /* Inline style grid overrides */
+  [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+  [style*="grid-template-columns:repeat(4"]{grid-template-columns:1fr 1fr!important}
+  [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr 1fr!important}
+  [style*="gap:48px"]{gap:24px!important}
+  [style*="gap:64px"]{gap:24px!important}
   .hero{grid-template-columns:1fr;gap:32px}
   .steps{grid-template-columns:1fr 1fr}
   .step::after{display:none}
@@ -299,6 +333,13 @@ tbody td{padding:14px 16px;font-size:13px;vertical-align:middle}
   .products-grid{grid-template-columns:1fr 1fr!important}
   .info-grid{grid-template-columns:1fr!important}
   .form-row{grid-template-columns:1fr!important}
+  [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr!important}
+  [style*="grid-template-columns:repeat(4"]{grid-template-columns:1fr 1fr!important}
+  [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr!important}
+  .hero-h1{font-size:24px}
+  .section-title{font-size:22px}
+  .nav-logo img{height:38px!important}
+  .tabs .tab-btn{padding:6px 8px;font-size:10px}
   .tabs .tab-btn{padding:8px 12px;font-size:12px}
 }
 </style>
