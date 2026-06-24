@@ -285,7 +285,7 @@ tbody td{padding:14px 16px;font-size:13px;vertical-align:middle}
 
 /* ── UTILS ── */
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-@media(max-width:768px){.info-grid{grid-template-columns:1fr!important}.products-grid{grid-template-columns:1fr 1fr!important}
+@media(max-width:768px){.info-grid{grid-template-columns:1fr!important}.products-grid{grid-template-columns:1fr 1fr!important}.hero-stats{flex-direction:row;flex-wrap:wrap;gap:16px}.capture-card{padding:24px 18px}
   .hero{grid-template-columns:1fr;gap:32px}
   .steps{grid-template-columns:1fr 1fr}
   .step::after{display:none}
@@ -296,6 +296,9 @@ tbody td{padding:14px 16px;font-size:13px;vertical-align:middle}
 @media(max-width:480px){
   .steps{grid-template-columns:1fr}
   .stat-grid{grid-template-columns:1fr 1fr}
+  .products-grid{grid-template-columns:1fr 1fr!important}
+  .info-grid{grid-template-columns:1fr!important}
+  .form-row{grid-template-columns:1fr!important}
   .tabs .tab-btn{padding:8px 12px;font-size:12px}
 }
 </style>
@@ -434,7 +437,7 @@ tbody td{padding:14px 16px;font-size:13px;vertical-align:middle}
 
     <!-- Real Company Info -->
     <section style="padding:64px 0;border-top:1px solid var(--border)">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start" class="info-grid">
 
         <!-- About -->
         <div>
@@ -493,8 +496,7 @@ tbody td{padding:14px 16px;font-size:13px;vertical-align:middle}
                   <div style="font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px">Phone</div>
                   <div style="font-size:13px;color:var(--text);line-height:1.8">
                     <a href="tel:+919925487128" style="color:var(--text);text-decoration:none">+91 99254 87128</a><br/>
-                    <a href="tel:+919265062641" style="color:var(--text);text-decoration:none">+91 92650 62641</a><br/>
-                    <a href="tel:+13022725885" style="color:var(--text);text-decoration:none">+1 302 272 5885</a>
+                    <a href="tel:+919265062641" style="color:var(--text);text-decoration:none">+91 92650 62641</a>
                   </div>
                 </div>
               </div>
@@ -520,7 +522,7 @@ tbody td{padding:14px 16px;font-size:13px;vertical-align:middle}
             <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.12)"></div>
             <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#fff;margin-bottom:8px">Join as Advertiser or Publisher</div>
             <p style="font-size:13px;color:rgba(255,255,255,.85);line-height:1.6;margin-bottom:18px">Register on the ADAffTech portal to access top-converting campaigns, real-time stats, and on-time payouts.</p>
-            <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-start">
               <a href="https://portal.adafftech.com/register" target="_blank" style="display:inline-block;background:#fff;color:var(--cyan);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;padding:10px 20px;border-radius:8px;text-decoration:none">Register Now →</a>
               <a href="https://partners.adafftech.com/" target="_blank" style="display:inline-block;background:rgba(255,255,255,.2);color:#fff;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;padding:10px 20px;border-radius:8px;text-decoration:none">Partner Login</a>
             </div>
@@ -535,7 +537,7 @@ tbody td{padding:14px 16px;font-size:13px;vertical-align:middle}
       <div class="hero-eye" style="margin-bottom:14px">Our Products</div>
       <h2 class="section-title" style="font-size:24px;margin-bottom:8px">Top Converting Campaigns</h2>
       <p style="font-size:14px;color:var(--muted);margin-bottom:32px">ADAffTech's flagship performance products across Home Services &amp; Insurance verticals.</p>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px" class="products-grid">
         <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 16px;text-align:center">
           <div style="font-size:28px;margin-bottom:10px">☀️</div>
           <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">America Solar</div>
