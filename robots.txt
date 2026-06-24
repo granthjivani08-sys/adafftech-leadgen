@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://granthjivani08-sys.github.io/adafftech-leadgen/sitemap.xml
