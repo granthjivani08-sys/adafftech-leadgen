@@ -713,23 +713,41 @@ tbody td{padding:14px 16px;font-size:13px;vertical-align:middle}
   </div>
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script>
-// ── DATA STORE (in-memory, no localStorage) ────────────────────────────────
-let leads = [
-  {id:1,fname:'Mihir',lname:'Desai',email:'mihir.desai@textileworldsurat.in',phone:'+91 98251 44321',biz:'E-commerce',intent:'Lead Generation',status:'Converted',date:'2026-06-05'},
-  {id:2,fname:'James',lname:'Carter',email:'james.carter@growthlab.io',phone:'+1 415 882 9931',biz:'SaaS / Software',intent:'Affiliate Marketing Setup',status:'Qualified',date:'2026-06-08'},
-  {id:3,fname:'Wei',lname:'Liang',email:'wei.liang@nexusdigital.sg',phone:'+65 9123 8877',biz:'E-commerce',intent:'Full Campaign Management',status:'Converted',date:'2026-06-09'},
-  {id:4,fname:'Prachi',lname:'Shah',email:'prachi@suratjewels.in',phone:'+91 98790 11223',biz:'Finance',intent:'Customer Acquisition',status:'Contacted',date:'2026-06-10'},
-  {id:5,fname:'Ryan',lname:'Mitchell',email:'ryan.m@launchpadventures.com',phone:'+1 646 773 4421',biz:'SaaS / Software',intent:'Lead Generation',status:'New',date:'2026-06-11'},
-  {id:6,fname:'Divya',lname:'Mehta',email:'divya@diamondcityfashion.in',phone:'+91 98254 66778',biz:'Health & Wellness',intent:'Brand Awareness',status:'Contacted',date:'2026-06-12'},
-  {id:7,fname:'Aiden',lname:'Tan',email:'aiden.tan@finbridge.sg',phone:'+65 8234 6655',biz:'Finance',intent:'Full Campaign Management',status:'Qualified',date:'2026-06-15'},
-  {id:8,fname:'Pooja',lname:'Patel',email:'pooja@eduvision.in',phone:'+91 97277 33445',biz:'Education',intent:'Customer Acquisition',status:'New',date:'2026-06-16'},
-  {id:9,fname:'Marcus',lname:'Johnson',email:'marcus@realestatepros.us',phone:'+1 312 559 8843',biz:'Real Estate',intent:'Lead Generation',status:'Converted',date:'2026-06-17'},
-  {id:10,fname:'Kenji',lname:'Ong',email:'kenji.ong@shopexpresssg.com',phone:'+65 9876 2211',biz:'E-commerce',intent:'Affiliate Marketing Setup',status:'Contacted',date:'2026-06-18'},
-];
+// ── FIREBASE INITIALIZATION ──────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyAgHiC-RxlQxMoKzd80cl7gdqGwgZDN8Cw",
+  authDomain: "granth-jivani.firebaseapp.com",
+  projectId: "granth-jivani",
+  storageBucket: "granth-jivani.firebasestorage.app",
+  messagingSenderId: "835664837852",
+  appId: "1:835664837852:web:1b05318bb18fb6b84f0819"
+};
 
-let nextId = 11;
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
+
+// ── DATA STORE (Firebase) ────────────────────────────────────────────────────
+let leads = [];
 let editingId = null;
+
+// Real-time listener
+db.collection("leads").onSnapshot((snapshot) => {
+    leads = [];
+    snapshot.forEach((doc) => {
+        leads.push({ id: doc.id, ...doc.data() });
+    });
+    
+    // Trigger UI updates
+    if (typeof updateHeroStats === 'function') updateHeroStats();
+    if (typeof renderTable === 'function' && document.getElementById('screen-crm').classList.contains('active')) renderTable();
+    if (typeof renderDashboard === 'function' && document.getElementById('screen-dashboard').classList.contains('active')) renderDashboard();
+});
 
 // ── TAB SWITCHING ────────────────────────────────────────────────────────────
 function showTab(tab) {
@@ -752,12 +770,14 @@ function submitLead() {
   const intent= document.getElementById('f-intent').value;
   if(!fname||!email){alert('Please enter at least your name and email.');return;}
   const today = new Date().toISOString().slice(0,10);
-  leads.push({id:nextId++,fname,lname,email,phone,biz:biz||'Other',intent:intent||'Lead Generation',status:'New',date:today});
-  ['f-fname','f-lname','f-email','f-phone'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-biz').value='';
-  document.getElementById('f-intent').value='';
-  showToast('✅ Lead captured! We\'ll reach out within 24 hours.');
-  updateHeroStats();
+  db.collection("leads").add({fname,lname,email,phone,biz:biz||'Other',intent:intent||'Lead Generation',status:'New',date:today})
+    .then(() => {
+      ['f-fname','f-lname','f-email','f-phone'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('f-biz').value='';
+      document.getElementById('f-intent').value='';
+      showToast('✅ Lead captured! We\'ll reach out within 24 hours.');
+    })
+    .catch(err => console.error("Error adding document: ", err));
 }
 
 function showToast(msg) {
@@ -800,12 +820,12 @@ function renderTable() {
       <td><span class="badge badge-${statusClass[l.status]}">${statusDot(l.status)} ${l.status}</span></td>
       <td style="font-size:12px;color:var(--muted)">${l.date}</td>
       <td>
-        <select class="filter-select" style="font-size:11px;padding:4px 8px" onchange="changeStatus(${l.id},this.value)">
+        <select class="filter-select" style="font-size:11px;padding:4px 8px" onchange="changeStatus('${l.id}',this.value)">
           <option value="">Change status</option>
           <option>New</option><option>Contacted</option><option>Qualified</option><option>Converted</option><option>Lost</option>
         </select>
-        <button class="action-btn" onclick="openEditModal(${l.id})">✏️</button>
-        <button class="action-btn" style="color:var(--danger)" onclick="deleteLead(${l.id})">🗑</button>
+        <button class="action-btn" onclick="openEditModal('${l.id}')">✏️</button>
+        <button class="action-btn" style="color:var(--danger)" onclick="deleteLead('${l.id}')">🗑</button>
       </td>
     </tr>
   `).join('');
@@ -818,15 +838,16 @@ function statusDot(s){
 
 function changeStatus(id, status) {
   if(!status) return;
-  const l = leads.find(x=>x.id===id);
-  if(l){ l.status=status; renderTable(); showToast(`Status updated to "${status}"`); }
+  db.collection("leads").doc(id).update({ status })
+    .then(() => showToast(`Status updated to "${status}"`))
+    .catch(err => console.error("Error updating status: ", err));
 }
 
 function deleteLead(id) {
   if(!confirm('Delete this lead?')) return;
-  leads = leads.filter(l=>l.id!==id);
-  renderTable();
-  showToast('🗑 Lead removed.');
+  db.collection("leads").doc(id).delete()
+    .then(() => showToast('🗑 Lead removed.'))
+    .catch(err => console.error("Error removing lead: ", err));
 }
 
 // ── MODAL ────────────────────────────────────────────────────────────────────
@@ -868,15 +889,20 @@ function saveLead() {
     status:document.getElementById('m-status').value,
   };
   if(editingId){
-    const l=leads.find(x=>x.id===editingId);
-    Object.assign(l,data);
-    showToast('✅ Lead updated.');
+    db.collection("leads").doc(editingId).update(data)
+      .then(() => {
+        showToast('✅ Lead updated.');
+        closeModalDirect();
+      })
+      .catch(err => console.error("Error updating document: ", err));
   } else {
-    leads.push({id:nextId++,...data,date:new Date().toISOString().slice(0,10)});
-    showToast('✅ Lead added.');
+    db.collection("leads").add({ ...data, date: new Date().toISOString().slice(0,10) })
+      .then(() => {
+        showToast('✅ Lead added.');
+        closeModalDirect();
+      })
+      .catch(err => console.error("Error adding document: ", err));
   }
-  closeModalDirect();
-  renderTable();
 }
 
 function closeModal(e){ if(e.target===document.getElementById('modal-overlay')) closeModalDirect(); }
